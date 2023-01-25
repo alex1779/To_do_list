@@ -1,23 +1,41 @@
-import _ from 'lodash';
 import './style.css';
-import printMe from './print.js';
 
- function component() {
-   const element = document.createElement('div');
+const tasksArray = [];
 
-  const btn = document.createElement('button');
+function createTask(obj) {
+  let myindex;
+  if (tasksArray.length === 0) {
+    myindex = 0;
+  } else {
+    myindex = tasksArray.length;
+  }
 
-   element.innerHTML = _.join(['Hello', 'webpack'], ' ');
+  const task = {
+    description: obj,
+    completed: false,
+    index: myindex,
+  };
+  tasksArray.push(task);
 
-  btn.innerHTML = 'Click me and check the console!';
+  const contenedor = document.querySelector('#contenedorTasks');
+  contenedor.innerHTML += `<li>
+  <div class="taskCont">
+    <input type="checkbox">
+    <div class="task">${task.description}</div>
+  </div>
+  <div class="icon">&#8942</div>
+</li>
+`;
+  const inputText = document.querySelector('#inputNewTask');
+  inputText.value = '';
+}
 
-  btn.onclick = printMe;
+window.onload = () => {
+  // const button = document.querySelector('.clearAll');
+  // button.onclick = function name() { sayHi(); };
 
-
-  element.appendChild(btn);
-
-
-   return element;
- }
-
- document.body.appendChild(component());
+  const inputText = document.querySelector('#inputNewTask');
+  inputText.addEventListener('keypress', (event) => {
+    if (event.keyCode === 13) { createTask(inputText.value); }
+  });
+};

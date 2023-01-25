@@ -5,26 +5,23 @@ module.exports = {
 
   mode: 'development',
 
- entry: {
-   index: './src/index.js',
-   print: './src/print.js',
- },
+  entry: {
+    index: './src/index.js',
+  },
 
- plugins: [
-  new HtmlWebpackPlugin({
-    template: './src/index.html',
-  }),
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './src/index.html',
+    }),
 
-],
+  ],
 
-devServer: {
-  static: './dist',
-},
+  devServer: {
+    static: './dist',
+  },
   output: {
 
-   filename: 'bundle.js',
-
-   filename: '[name].bundle.js',
+    filename: '[name].bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
 
