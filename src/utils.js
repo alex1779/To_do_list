@@ -43,9 +43,21 @@ function setValueTextArea(textArea, labelTask) {
   scrapeAndSave();
 }
 
+function setValueTextAreaAlls() {
+  const textAreas = document.querySelectorAll('.textArea');
+  textAreas.forEach((textArea) => {
+    const parentDivTaskCont = textArea.parentNode;
+    const labelTask = parentDivTaskCont.querySelector('.task');
+    if (textArea.style.display === 'block') {
+      setValueTextArea(textArea, labelTask);
+    }
+  });
+}
+
 export function addEventclearAllButton() {
   const buttonClearAll = document.querySelector('.clearAll');
   buttonClearAll.addEventListener('click', () => {
+    setValueTextAreaAlls();
     const liElements = document.querySelectorAll('li');
     liElements.forEach((liElem) => {
       const checkboxElem = liElem.querySelector('.checkBoxesTasks');
@@ -58,6 +70,7 @@ export function addEventclearAllButton() {
 }
 
 export function manageBoxes(checkboxElem) {
+  setValueTextAreaAlls();
   const parentDiv = checkboxElem.parentNode;
   const textChild = parentDiv.querySelector('.task');
   if (checkboxElem.checked) {
@@ -93,11 +106,10 @@ function restoreDataTExtArea(lilElem, labelTask, textArea) {
   labelTask.style.display = 'none';
   textArea.style.display = 'block';
   textArea.value = labelTask.innerHTML;
-  // change incon to trash
+  // Change Icon to Trash
   const iconDiv = lilElem.querySelector('.icon');
   iconDiv.innerHTML = '&#x1F5D1';
   textArea.focus();
-  textArea.addEventListener('blur', () => { setValueTextArea(textArea, labelTask); });
   textArea.addEventListener('keypress', (event) => {
     if (event.keyCode === 13) {
       if (textArea.value !== '') {
@@ -107,7 +119,22 @@ function restoreDataTExtArea(lilElem, labelTask, textArea) {
   });
 }
 
+export function deleteFromIcons() {
+  const iconDiv = document.querySelectorAll('.icon');
+  iconDiv.forEach((icon) => {
+    icon.addEventListener('click', () => {
+      const parentLi = icon.parentNode;
+      const task = parentLi.querySelector('.task');
+      if (task.style.display === 'none') {
+        parentLi.remove();
+        scrapeAndSave();
+      }
+    });
+  });
+}
+
 export function manageLabels(labelTask) {
+  setValueTextAreaAlls();
   const parentDivTaskCont = labelTask.parentNode;
   const liElem = parentDivTaskCont.parentNode;
   labelTask.style.display = 'none';
@@ -149,10 +176,15 @@ export function createTask(tasksArray, obj) {
   scrapeAndSave();
   addEventsToLabels();
   addEventsCheckBoxes();
+  deleteFromIcons();
 }
 
 export function addEventsNewTasks(tasksArray) {
   const inputText = document.querySelector('#inputNewTask');
+  inputText.addEventListener('focus', () => {
+    setValueTextAreaAlls();
+  });
+
   inputText.addEventListener('keypress', (event) => {
     if (event.keyCode === 13) {
       if (inputText.value !== '') {

@@ -1,6 +1,7 @@
 import './style.css';
 import {
   addEventsToLabels, addEventsCheckBoxes, addEventsNewTasks, addEventclearAllButton,
+  deleteFromIcons,
 } from './utils.js';
 
 window.onload = () => {
@@ -27,4 +28,5 @@ window.onload = () => {
   addEventsCheckBoxes();
   addEventsNewTasks(tasksArray);
   addEventclearAllButton();
+  deleteFromIcons();
 };
